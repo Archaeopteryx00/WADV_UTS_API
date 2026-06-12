@@ -1,0 +1,35 @@
+// Nama: Muhammad Mufti | NIM: 24110400020
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = "postgresql://postgres.yyzppeynlraxmbyehhfc:utswadvMufti@aws-1-ap-northeast-2.pooler.supabase.com:5432/postgres"
+  directUrl = "postgresql://postgres:utswadvMufti@db.yyzppeynlraxmbyehhfc.supabase.co:5432/postgres"
+}
+
+model Wallet {
+  id           Int          @id @default(autoincrement())
+  name         String
+  currency     String       @default("IDR")
+  createdAt    DateTime     @default(now())
+
+  transactions Transaction[]
+}
+
+model Transaction {
+  id        Int      @id @default(autoincrement())
+  amount    Float
+  type      String
+  category  String
+  note      String?
+  date      DateTime
+  createdAt DateTime @default(now())
+
+  walletId  Int
+  wallet    Wallet   @relation(fields: [walletId], references: [id])
+}
